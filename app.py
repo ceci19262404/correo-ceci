@@ -1,3 +1,4 @@
+
 import streamlit as st
 import requests
 import random
@@ -73,15 +74,20 @@ if st.button("Revisar bandeja de entrada"):
                 html = contenido.get("html", "")
                 intro = contenido.get("intro", "")
 
-                if texto:
-                    st.text_area("Mensaje (texto)", texto, height=200)
-                elif html:
-                    limpio = limpiar_html("".join(html))
+                if isinstance(texto, list):
+                    texto = "\n".join(texto)
+                if isinstance(html, list):
+                    html = "\n".join(html)
+
+                if texto.strip():
+                    st.text_area("Mensaje (texto)", texto.strip(), height=200)
+                elif html.strip():
+                    limpio = limpiar_html(html)
                     st.text_area("Mensaje (HTML limpio)", limpio.strip(), height=300)
-                elif intro:
+                elif intro.strip():
                     st.text_area("Mensaje (intro)", intro.strip(), height=150)
                 else:
-                    st.warning("No se encontró contenido visible. Mostrando todo el JSON:")
+                    st.warning("No se encontró contenido útil. Mostrando mensaje completo:")
                     st.code(json.dumps(contenido, indent=2))
 
             except Exception as e:
