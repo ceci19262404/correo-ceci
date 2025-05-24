@@ -3,6 +3,7 @@ import requests
 import random
 import string
 import re
+import json
 
 class MailTM:
     def __init__(self):
@@ -68,10 +69,10 @@ if st.button("Revisar bandeja de entrada"):
         if st.button(f"Leer mensaje ID: {msg['id']}", key=msg['id']):
             contenido = st.session_state.mailtm.read_message(msg["id"])
             if contenido.get("text"):
-                st.text_area("Contenido del mensaje", contenido["text"], height=200)
+                st.text_area("Contenido del mensaje (texto)", contenido["text"], height=200)
             elif contenido.get("html"):
                 texto_limpio = limpiar_html(contenido["html"])
-                st.text_area("Contenido desde HTML", texto_limpio.strip(), height=300)
+                st.text_area("Contenido del mensaje (HTML limpio)", texto_limpio.strip(), height=300)
             else:
-                st.warning("No se encontró contenido estructurado. Mostrando todo el mensaje en crudo:")
-                st.text_area("Contenido crudo", str(contenido), height=400)
+                st.warning("No se encontró contenido estructurado. Aquí tienes el mensaje completo:")
+                st.text_area("Contenido crudo (JSON)", json.dumps(contenido, indent=2), height=400)
