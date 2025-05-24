@@ -68,11 +68,15 @@ if st.button("Revisar bandeja de entrada"):
         st.markdown(f"**Asunto:** {msg['subject']}")
         if st.button(f"Leer mensaje ID: {msg['id']}", key=msg['id']):
             contenido = st.session_state.mailtm.read_message(msg["id"])
+            st.markdown("**Contenido completo en JSON:**")
+            st.code(json.dumps(contenido, indent=2))
+
             if contenido.get("text"):
-                st.text_area("Contenido del mensaje (texto)", contenido["text"], height=200)
+                st.text_area("Mensaje en texto:", contenido["text"], height=200)
             elif contenido.get("html"):
                 texto_limpio = limpiar_html(contenido["html"])
-                st.text_area("Contenido del mensaje (HTML limpio)", texto_limpio.strip(), height=300)
+                st.text_area("Mensaje en HTML limpio:", texto_limpio.strip(), height=300)
+            elif "intro" in contenido:
+                st.text_area("Contenido (intro):", contenido["intro"], height=200)
             else:
-                st.warning("No se encontró contenido estructurado. Aquí tienes el mensaje completo:")
-                st.text_area("Contenido crudo (JSON)", json.dumps(contenido, indent=2), height=400)
+                st.warning("No hay contenido de texto o html.")
