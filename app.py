@@ -73,4 +73,5 @@ if st.button("Revisar bandeja de entrada"):
                 texto_limpio = limpiar_html(contenido["html"])
                 st.text_area("Contenido desde HTML", texto_limpio.strip(), height=300)
             else:
-                st.warning("Mensaje sin contenido visible.")
+                st.warning("No se encontró contenido estructurado. Mostrando todo el mensaje en crudo:")
+                st.text_area("Contenido crudo", str(contenido), height=400)
