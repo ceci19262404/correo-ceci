@@ -81,8 +81,8 @@ if st.button("Revisar bandeja de entrada"):
                 elif intro.strip():
                     st.text_area("Mensaje (intro)", intro.strip(), height=150)
                 else:
-                    st.warning("No se encontró texto visible. Mostrando todo el contenido:")
-                    st.code(json.dumps(contenido, indent=2), language="json")
+                    st.warning("No se encontró texto visible. Mostrando contenido completo del mensaje:")
+                    st.code(json.dumps(contenido, indent=2))
 
             except Exception as e:
                 st.error(f"Error al leer el mensaje: {e}")
