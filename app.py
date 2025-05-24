@@ -69,16 +69,20 @@ if st.button("Revisar bandeja de entrada"):
         if st.button(f"Leer mensaje ID: {msg['id']}", key=msg['id']):
             try:
                 contenido = st.session_state.mailtm.read_message(msg["id"])
-                if contenido.get("text"):
-                    st.text_area("Mensaje (texto)", contenido["text"], height=200)
-                elif contenido.get("html"):
-                    html_limpio = limpiar_html(contenido["html"])
-                    st.text_area("Mensaje (HTML limpio)", html_limpio.strip(), height=300)
-                elif contenido.get("intro"):
-                    st.text_area("Mensaje (intro)", contenido["intro"], height=150)
+                texto = contenido.get("text", "")
+                html = contenido.get("html", "")
+                intro = contenido.get("intro", "")
+
+                if texto:
+                    st.text_area("Mensaje (texto)", texto, height=200)
+                elif html:
+                    limpio = limpiar_html(html)
+                    st.text_area("Mensaje (HTML limpio)", limpio.strip(), height=300)
+                elif intro:
+                    st.text_area("Mensaje (intro)", intro.strip(), height=150)
                 else:
-                    st.warning("No se encontró contenido en texto o HTML.")
-                    st.markdown("### Contenido bruto:")
+                    st.warning("No se encontró texto visible.")
                     st.code(json.dumps(contenido, indent=2))
+
             except Exception as e:
                 st.error(f"Error al leer el mensaje: {e}")
